@@ -1,5 +1,7 @@
 <?php
 /*
+http://jsfiddle.net/UrZM8/1/
+
 ddice
 [
 	[면체:int, 결과:int]
