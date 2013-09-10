@@ -118,3 +118,30 @@ class DDice {
 
 var_dump(DDice::register());
 ?>
+
+<button>굴리기</button>
+<div class="ddice_form">
+    <div class="ddice_header">
+        <h3>다이스 굴리기</h3>
+        <a href="#" title="닫기" class="ddice_close_btn">X</a>
+    </div>
+    <dl>
+        <dt>다이스 선택</dt>
+        <dd>
+            <ul class="ddice_dices">
+        <li><button>4</button></li>
+        <li><button>6</button></li>
+        <li><button>8</button></li>
+        <li><button>10</button></li>
+        <li><button>12</button></li>
+        <li><button>100</button></li>
+            </ul>
+        </dd>
+        <dt>결과</dt>
+        <dd>
+    <ul class="ddice_dices ddice_output_dices">
+        <li><button>10</button></li>
+    </ul>
+        </dd>
+    </dl>
+</div>
