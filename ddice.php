@@ -1,6 +1,6 @@
 <?php
 /*
-http://jsfiddle.net/UrZM8/3/
+http://jsfiddle.net/UrZM8/4/
 
 ddice
 [
