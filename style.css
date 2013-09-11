@@ -1,10 +1,17 @@
-.ddice_form {display:block;position:absolute;top:10px;left:10px;}
-.ddice_form UL,LI,DL,DD,DIV,BUTTON,H3 {margin: 0 0 0 0;padding:0 0 0 0;}
-.ddice_form BUTTON {width:30px; font-size:8pt;vertical-align:middle;height:30px;}
+.ddice_form {display:block;position:absolute;}
+.ddice_form UL,LI,DL,DD,DT,DIV,BUTTON,H3 {margin: 0 0 0 0;padding:0 0 0 0;}
 .ddice_form {border:1px solid #c0c0c0; box-shadow: inset 0 1px 2px #e4e4e4;width:330px;font-size:9pt;background: #FFFFFF;}
 .ddice_form .ddice_dices LI {display:inline;}
-.ddice_form DL DT {float:left;width:70px;margin: 0 10px 0 10px;padding: 5px 0 5px 0;}
-.ddice_form DL DD {width:230px;margin:0 0 0 90px;padding: 5px 0 5px 0;min-height:30px;}
+.ddice_form .ddice_dices BUTTON {width:30px; font-size:8pt;vertical-align:middle;height:30px;}
+.ddice_form DL DT {float:left;width:80px;margin: 0 10px 0 10px;padding: 5px 0 5px 0;}
+.ddice_form DL DD {width:220px;margin:0 0 0 90px;padding: 5px 0 5px 10px;min-height:30px;}
 .ddice_form .ddice_header {padding: 5px;font-size:8pt;}
 .ddice_form .ddice_header H3 {display:inline-block;}
 .ddice_form .ddice_header A {text-decoration:none;display:inline-block;text-align:right;float:right;}
+.ddice_form .ddice_output_dices BUTTON:hover {cursor:crosshair;}
+.ddice_form .ddice_roll {text-align: right;padding-right:10px;padding-bottom:10px;}
+.ddice_form .ddice_roll_btn {width:70px;}
+.ddice_form .ddice_desc {margin : 10px 10px 3px 10px;color:#8d8d8d;}
+
+.ddice_result LI {display:inline;}
+.ddice_result UL {margin: 0 0 0 0;padding: 0 0 0 0;}
