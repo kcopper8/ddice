@@ -4,9 +4,14 @@ $(document).ready(function(){
         this.length = 0;
         return this;
     };
+    if (typeof String.prototype.trim == 'undefined') {
+        String.prototype.trim = function() {
+            return this.replace(/(^\s*)|(\s*$)/gi, "");
+        }
+    }
     
     function callUrl(htParam) {
-        var sBase = 'http://local.hunter.net/ddice/ddice.php';
+        var sBase = 'http://kcopper8.dothome.co.kr/ddice/ddice.php';
         htParam['ddiceKey'] = 'kayzero';
         
         var aParam = [];
@@ -80,6 +85,7 @@ $(document).ready(function(){
             _clear();
         }
         
+        
         $elDDiceForm.click(function(oEvent) {
             switch($(oEvent.target).attr('ddice-click')) {
                 case "select":
@@ -96,14 +102,14 @@ $(document).ready(function(){
                     _roll();
                     break;
                 default:
-                    console.log("click, but no handler for " + $(oEvent.target).attr('ddice-click'));
-                    console.log(oEvent.target);
                     break;
             }
         });
         
+        
         return {
-            "show" : function(target, id) {
+            'show' : function(target, id) {
+                
                 _clear();
                 $elDDiceForm.show();
                 htOffset = $(target).offset();
@@ -112,8 +118,7 @@ $(document).ready(function(){
                     , left : htOffset.left + 10
                 });
                 targetId = id;
-            },
-
+            }
         };
     };
     
@@ -121,9 +126,9 @@ $(document).ready(function(){
     $.fn.ddice = function(settings) {
         var $this = $(this);
         var config = {
-            tplRoll : '<button class="ddice-button">roll</button>'
+            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">주사위 굴리기</button>'
             , tplResult : '<div class="ddice_result"><ul>#result#</ul></div>'
-            , tplResultDice : '<li><img src="http://local.hunter.net/ddice/#type#-#value#.gif" alt="#type#면체 결과 #value#" /></li>'
+            , tplResultDice : '<li><img src="http://kcopper8.dothome.co.kr/ddice/dice/dice#type#/#type#dice#value#.png" alt="#type#면체 결과 #value#" /></li>'
             , sCss : ''
         };
                 
@@ -148,8 +153,8 @@ $(document).ready(function(){
             "rolled" : function($target, vDData) {
                 var sHtml = "";
                 $.each(vDData.dices, function(nIdx, nVal) {
-                    var sDiceHtml = config.tplResultDice.replace(/#type#/, nVal.type);
-                    sDiceHtml = sDiceHtml.replace(/#value#/, nVal.value);
+                    var sDiceHtml = config.tplResultDice.replace(/#type#/g, nVal.type);
+                    sDiceHtml = sDiceHtml.replace(/#value#/g, nVal.value);
                     
                     sHtml += sDiceHtml;
                 });
@@ -178,7 +183,22 @@ $(document).ready(function(){
             }
         });
         
-        $('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
+        {
+
+        var ss1 = document.createElement('style');
+        var def = config.sCss;
+        ss1.setAttribute("type", "text/css");
+        var hh1 = document.getElementsByTagName('head')[0];
+        hh1.appendChild(ss1);
+        if (ss1.styleSheet) {   // IE
+            ss1.styleSheet.cssText = def;
+        } else {                // the world
+            var tt1 = document.createTextNode(def);
+            ss1.appendChild(tt1);
+        }
+           //$('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
+        }
+
         return this;
     };
     
