@@ -47,7 +47,7 @@ $(document).ready(function(){
         
         function _add(nDiceType) {
             if (aDices.length >= config.nMaxDiceSelect) {
-                alert(config.nMaxDiceSelect + "Í∞úÍπåÏßÄ Íµ¥Î¶¥ Ïàò ÏûàÏäµÎãàÎã§.");
+                alert(config.nMaxDiceSelect + "∞≥±Ó¡ˆ ±º∏± ºˆ ¿÷Ω¿¥œ¥Ÿ.");
                 return;
             }
             aDices.push(nDiceType);
@@ -67,7 +67,7 @@ $(document).ready(function(){
         
         function _roll() {
             if (aDices.length < 1) {
-                alert("Îã§Ïù¥Ïä§Î•º ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî!");
+                alert("¥Ÿ¿ÃΩ∫∏¶ º±≈√«ÿ¡÷ººø‰!");
                 return;
             }
             
@@ -126,9 +126,9 @@ $(document).ready(function(){
     $.fn.ddice = function(settings) {
         var $this = $(this);
         var config = {
-            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">Ï£ºÏÇ¨ÏúÑ Íµ¥Î¶¨Í∏∞</button>'
+            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">¡÷ªÁ¿ß ±º∏Æ±‚</button>'
             , tplResult : '<div class="ddice_result"><ul>#result#</ul></div>'
-            , tplResultDice : '<li><img src="http://kcopper8.dothome.co.kr/ddice/dice/dice#type#/#type#dice#value#.png" alt="#type#Î©¥Ï≤¥ Í≤∞Í≥º #value#" /></li>'
+            , tplResultDice : '<li><img src="http://kcopper8.dothome.co.kr/ddice/dice/dice#type#/#type#dice#value#.png" alt="#type#∏È√º ∞·∞˙ #value#" /></li>'
             , sCss : ''
         };
                 
@@ -142,10 +142,7 @@ $(document).ready(function(){
 
         var htFnDdiceGenerate = {
             "unregistered" : function($target, vDData) {
-                $target.html(config.tplRoll);
-                $target.click(function() {
-                    oDDiceForm.show(this, $target.attr("ddice-id"));
-                })
+                // do nothing
             },
             "registered" : function($target, vDData) {
                 // do nothing
@@ -199,9 +196,52 @@ $(document).ready(function(){
            //$('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
         }
 
+        $('<input type="checkbox" name="ddice"> <span>¡÷ªÁ¿ß</span>').appendTo($("FORM[name=write2] TABLE").find("TR:last TD:first"));
+        js_input_checkboxs_skin($('INPUT[name=ddice]'));
+
+        $('INPUT[name=ddice]').click(function() {
+            oDDiceForm.show(this, '');
+        });
+
         return this;
     };
+
+    var sFrmHtml = ''
+    + '<div class="ddice_form" style="display:none;">\n'
++ '    <div class="ddice_header">\n'
++ '        <h3>¥Ÿ¿ÃΩ∫ ±º∏Æ±‚</h3>\n'
++ '        <a href="#" title="¥›±‚" class="ddice_close_btn" ddice-click="close">X</a>\n'
++ '    </div>\n'
++ '    <dl>\n'
++ '        <dt>¥Ÿ¿ÃΩ∫ ¡æ∑˘</dt>\n'
++ '        <dd>\n'
++ '            <ul class="ddice_dices">\n'
++ '        <li><button disabled>4</button></li>\n'
++ '        <li><button disabled>6</button></li>\n'
++ '        <li><button disabled>8</button></li>\n'
++ '        <li><button ddice-click="select">10</button></li>\n'
++ '        <li><button disabled>12</button></li>\n'
++ '        <li><button disabled>100</button></li>\n'
++ '            </ul>\n'
++ '        </dd>\n'
++ '        <dt>º±≈√«— ¥Ÿ¿ÃΩ∫</dt>\n'
++ '        <dd>\n'
++ '    <ul class="ddice_dices ddice_output_dices">\n'
++ '        <li><button>10</button></li>\n'
++ '    </ul>\n'
++ '        </dd>\n'
++ '    </dl>\n'
++ '    <p class="ddice_desc remove">º±≈√«— ¥Ÿ¿ÃΩ∫∏¶ ≈¨∏Ø«œ∏È ¡¶∞≈«“ ºˆ ¿÷Ω¿¥œ¥Ÿ.</p>\n'
++ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">±º∏Æ±‚</button></div>\n'
++ '</div>\n'
+
     
+
+    var oDDiceForm = DDiceForm({
+        'sFrmHtml' : sFrmHtml
+    });
+}(jQuery));
+
     var sCss = ""
 + ".ddice_form {display:block;position:absolute;}\n"
 + ".ddice_form UL,LI,DL,DD,DT,DIV,BUTTON,H3 {margin: 0 0 0 0;padding:0 0 0 0;}\n"
@@ -221,46 +261,8 @@ $(document).ready(function(){
 + ".ddice_result LI {display:inline;}\n"
 + ".ddice_result UL {margin: 0 0 0 0;padding: 0 0 0 0;}\n"
 ;
-
-    var sFrmHtml = ''
-    + '<div class="ddice_form" style="display:none;">\n'
-+ '    <div class="ddice_header">\n'
-+ '        <h3>Îã§Ïù¥Ïä§ Íµ¥Î¶¨Í∏∞</h3>\n'
-+ '        <a href="#" title="Îã´Í∏∞" class="ddice_close_btn" ddice-click="close">X</a>\n'
-+ '    </div>\n'
-+ '    <dl>\n'
-+ '        <dt>Îã§Ïù¥Ïä§ Ï¢ÖÎ•ò</dt>\n'
-+ '        <dd>\n'
-+ '            <ul class="ddice_dices">\n'
-+ '        <li><button disabled>4</button></li>\n'
-+ '        <li><button disabled>6</button></li>\n'
-+ '        <li><button disabled>8</button></li>\n'
-+ '        <li><button ddice-click="select">10</button></li>\n'
-+ '        <li><button disabled>12</button></li>\n'
-+ '        <li><button disabled>100</button></li>\n'
-+ '            </ul>\n'
-+ '        </dd>\n'
-+ '        <dt>ÏÑ†ÌÉùÌïú Îã§Ïù¥Ïä§</dt>\n'
-+ '        <dd>\n'
-+ '    <ul class="ddice_dices ddice_output_dices">\n'
-+ '        <li><button>10</button></li>\n'
-+ '    </ul>\n'
-+ '        </dd>\n'
-+ '    </dl>\n'
-+ '    <p class="ddice_desc remove">ÏÑ†ÌÉùÌïú Îã§Ïù¥Ïä§Î•º ÌÅ¥Î¶≠ÌïòÎ©¥ Ï†úÍ±∞Ìï† Ïàò ÏûàÏäµÎãàÎã§.</p>\n'
-+ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">Íµ¥Î¶¨Í∏∞</button></div>\n'
-+ '</div>\n'
-
-    
-
-    var oDDiceForm = DDiceForm({
-        'sFrmHtml' : sFrmHtml
+    $("[ddice-id]").ddice({
+        "sCss" : sCss
     });
 
-
-$("[ddice-id]").ddice({
-    "sCss" : sCss
-});
-    
-}(jQuery));
 });
