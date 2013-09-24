@@ -4,14 +4,9 @@ $(document).ready(function(){
         this.length = 0;
         return this;
     };
-    if (typeof String.prototype.trim == 'undefined') {
-        String.prototype.trim = function() {
-            return this.replace(/(^\s*)|(\s*$)/gi, "");
-        }
-    }
     
     function callUrl(htParam) {
-        var sBase = 'http://kcopper8.dothome.co.kr/ddice/ddice.php';
+        var sBase = 'http://local.hunter.net/ddice/ddice.php';
         htParam['ddiceKey'] = 'kayzero';
         
         var aParam = [];
@@ -47,7 +42,7 @@ $(document).ready(function(){
         
         function _add(nDiceType) {
             if (aDices.length >= config.nMaxDiceSelect) {
-                alert(config.nMaxDiceSelect + "∞≥±Ó¡ˆ ±º∏± ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+                alert(config.nMaxDiceSelect + "Í∞úÍπåÏßÄ Íµ¥Î¶¥ Ïàò ÏûàÏäµÎãàÎã§.");
                 return;
             }
             aDices.push(nDiceType);
@@ -67,7 +62,7 @@ $(document).ready(function(){
         
         function _roll() {
             if (aDices.length < 1) {
-                alert("¥Ÿ¿ÃΩ∫∏¶ º±≈√«ÿ¡÷ººø‰!");
+                alert("Îã§Ïù¥Ïä§Î•º ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî!");
                 return;
             }
             
@@ -85,7 +80,6 @@ $(document).ready(function(){
             _clear();
         }
         
-        
         $elDDiceForm.click(function(oEvent) {
             switch($(oEvent.target).attr('ddice-click')) {
                 case "select":
@@ -102,14 +96,14 @@ $(document).ready(function(){
                     _roll();
                     break;
                 default:
+                    console.log("click, but no handler for " + $(oEvent.target).attr('ddice-click'));
+                    console.log(oEvent.target);
                     break;
             }
         });
         
-        
         return {
-            'show' : function(target, id) {
-                
+            "show" : function(target, id) {
                 _clear();
                 $elDDiceForm.show();
                 htOffset = $(target).offset();
@@ -118,7 +112,8 @@ $(document).ready(function(){
                     , left : htOffset.left + 10
                 });
                 targetId = id;
-            }
+            },
+
         };
     };
     
@@ -126,9 +121,9 @@ $(document).ready(function(){
     $.fn.ddice = function(settings) {
         var $this = $(this);
         var config = {
-            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">¡÷ªÁ¿ß ±º∏Æ±‚</button>'
+            tplRoll : '<button class="ddice-button">roll</button>'
             , tplResult : '<div class="ddice_result"><ul>#result#</ul></div>'
-            , tplResultDice : '<li><img src="http://kcopper8.dothome.co.kr/ddice/dice/dice#type#/#type#dice#value#.png" alt="#type#∏È√º ∞·∞˙ #value#" /></li>'
+            , tplResultDice : '<li><img src="http://local.hunter.net/ddice/#type#-#value#.gif" alt="#type#Î©¥Ï≤¥ Í≤∞Í≥º #value#" /></li>'
             , sCss : ''
         };
                 
@@ -153,8 +148,8 @@ $(document).ready(function(){
             "rolled" : function($target, vDData) {
                 var sHtml = "";
                 $.each(vDData.dices, function(nIdx, nVal) {
-                    var sDiceHtml = config.tplResultDice.replace(/#type#/g, nVal.type);
-                    sDiceHtml = sDiceHtml.replace(/#value#/g, nVal.value);
+                    var sDiceHtml = config.tplResultDice.replace(/#type#/, nVal.type);
+                    sDiceHtml = sDiceHtml.replace(/#value#/, nVal.value);
                     
                     sHtml += sDiceHtml;
                 });
@@ -183,22 +178,7 @@ $(document).ready(function(){
             }
         });
         
-        {
-
-        var ss1 = document.createElement('style');
-        var def = config.sCss;
-        ss1.setAttribute("type", "text/css");
-        var hh1 = document.getElementsByTagName('head')[0];
-        hh1.appendChild(ss1);
-        if (ss1.styleSheet) {   // IE
-            ss1.styleSheet.cssText = def;
-        } else {                // the world
-            var tt1 = document.createTextNode(def);
-            ss1.appendChild(tt1);
-        }
-           //$('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
-        }
-
+        $('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
         return this;
     };
     
@@ -225,11 +205,11 @@ $(document).ready(function(){
     var sFrmHtml = ''
     + '<div class="ddice_form" style="display:none;">\n'
 + '    <div class="ddice_header">\n'
-+ '        <h3>¥Ÿ¿ÃΩ∫ ±º∏Æ±‚</h3>\n'
-+ '        <a href="#" title="¥›±‚" class="ddice_close_btn" ddice-click="close">X</a>\n'
++ '        <h3>Îã§Ïù¥Ïä§ Íµ¥Î¶¨Í∏∞</h3>\n'
++ '        <a href="#" title="Îã´Í∏∞" class="ddice_close_btn" ddice-click="close">X</a>\n'
 + '    </div>\n'
 + '    <dl>\n'
-+ '        <dt>¥Ÿ¿ÃΩ∫ ¡æ∑˘</dt>\n'
++ '        <dt>Îã§Ïù¥Ïä§ Ï¢ÖÎ•ò</dt>\n'
 + '        <dd>\n'
 + '            <ul class="ddice_dices">\n'
 + '        <li><button disabled>4</button></li>\n'
@@ -240,15 +220,15 @@ $(document).ready(function(){
 + '        <li><button disabled>100</button></li>\n'
 + '            </ul>\n'
 + '        </dd>\n'
-+ '        <dt>º±≈√«— ¥Ÿ¿ÃΩ∫</dt>\n'
++ '        <dt>ÏÑ†ÌÉùÌïú Îã§Ïù¥Ïä§</dt>\n'
 + '        <dd>\n'
 + '    <ul class="ddice_dices ddice_output_dices">\n'
 + '        <li><button>10</button></li>\n'
 + '    </ul>\n'
 + '        </dd>\n'
 + '    </dl>\n'
-+ '    <p class="ddice_desc remove">º±≈√«— ¥Ÿ¿ÃΩ∫∏¶ ≈¨∏Ø«œ∏È ¡¶∞≈«“ ºˆ ¿÷Ω¿¥œ¥Ÿ.</p>\n'
-+ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">±º∏Æ±‚</button></div>\n'
++ '    <p class="ddice_desc remove">ÏÑ†ÌÉùÌïú Îã§Ïù¥Ïä§Î•º ÌÅ¥Î¶≠ÌïòÎ©¥ Ï†úÍ±∞Ìï† Ïàò ÏûàÏäµÎãàÎã§.</p>\n'
++ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">Íµ¥Î¶¨Í∏∞</button></div>\n'
 + '</div>\n'
 
     
