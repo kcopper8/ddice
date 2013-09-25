@@ -27,6 +27,20 @@
 		} else {
 			echo "{'code' : 1}";
 		}
+	} else if ($_GET["action"] == "roll_redirect") {
+		$id = $_GET["id"];
+		$types = $_GET["types"];
+		$ddiceKey = $_GET["ddiceKey"];
+		$redirect = $_GET["redirect"];
+
+		$key = generateKey($ddiceKey, $id);
+		$ddice = DDice::get($key);
+
+		$type_arr = explode(",", $types);
+		$ddice -> forceToRoll($type_arr);
+
+		echo("<script>location.href='$redirect';</script>");
+
 	} else {
 		if($_GET["ids"]) {
 			$ids = explode(",", $_GET["ids"]);

@@ -36,7 +36,7 @@ $(document).ready(function(){
         var $frm = $elDDiceForm = $(config.sFrmHtml).appendTo("BODY");
         $frm.output = $frm.find(".ddice_output_dices").first();
         var aDices = [];
-        var targetId = "";
+        var fnComplete = function() {};
         
         function _draw() {
             $frm.output.empty();
@@ -71,20 +71,33 @@ $(document).ready(function(){
                 return;
             }
             
-            $.ajax(callUrl({
-                'action' : 'roll'
-                , 'id' : targetId
-                , 'types' : aDices.join(",")
-            }), {
-                "dataType" : "jsonp",
-                "success" : function(oData) {
-                    location.reload();
-                }
-            });
+            fnComplete(aDices.join(","));
+
             $frm.hide();
             _clear();
         }
-        
+
+        function _open(target, sVal) {
+            _clear();
+            $elDDiceForm.show();
+            var htOffset = $(target).offset();
+            $elDDiceForm.offset({
+                top : htOffset.top + 10
+                , left : htOffset.left + 10
+            });
+
+            if (sVal) {
+                sVal = sVal.trim();
+                if (/^((4|6|8|10|12|20),)*(4|6|8|10|12|20)$/.test(sVal)) {
+                    var aNewDices = sVal.split(',');
+                    aDices = $.map(aNewDices, function(sDiceType) {
+                        return parseInt(sDiceType);
+                    });
+
+                    _draw();
+                }
+            }
+        }
         
         $elDDiceForm.click(function(oEvent) {
             switch($(oEvent.target).attr('ddice-click')) {
@@ -109,15 +122,31 @@ $(document).ready(function(){
         
         return {
             'show' : function(target, id) {
-                
-                _clear();
-                $elDDiceForm.show();
-                htOffset = $(target).offset();
-                $elDDiceForm.offset({
-                    top : htOffset.top + 10
-                    , left : htOffset.left + 10
-                });
-                targetId = id;
+                _open(target);
+
+                fnComplete = function(sValue) {
+                    $.ajax(callUrl({
+                        'action' : 'roll'
+                        , 'id' : id
+                        , 'types' : sValue
+                    }), {
+                        "dataType" : "jsonp",
+                        "success" : function(oData) {
+                            location.reload();
+                        }
+                    });
+                };
+            },
+            'attachInput' : function(target) {
+                var sVal = $(target).find("INPUT[name=ddice]").val();
+                _open(target, sVal);
+                console.log(target);
+
+                fnComplete = function(sValue) {
+                    console.log(sValue);
+                    console.log(target);
+                    $(target).find("INPUT[name=ddice]").val(sValue);
+                };
             }
         };
     };
@@ -136,7 +165,19 @@ $(document).ready(function(){
         
         var aDdiceIds = [];
         this.each(function() {
-            aDdiceIds.push($(this).attr("ddice-id"));
+            if ($(this).attr("ddice-id")) {
+                aDdiceIds.push($(this).attr("ddice-id"));
+            }
+
+            if ($(this).attr("ddice") == 'form') {
+                var elDDiceFormType = this;
+                $('<a href="#"><img src="http://kayzero.ivyro.net/bbs/data/hunter/dice2.png"></a><input type="hidden" name="ddice">')
+                    .appendTo(this)
+                    .click(function(oEvent) {
+                        oEvent.preventDefault();
+                       oDDiceForm.attachInput(elDDiceFormType);
+                    });
+            }
         });
 
 
@@ -196,13 +237,6 @@ $(document).ready(function(){
            //$('<STYLE type="text/css"></STYLE>').appendTo("HEAD").html(config.sCss);
         }
 
-        $('<input type="checkbox" name="ddice"> <span>주사위</span>').appendTo($("FORM[name=write2] TABLE").find("TR:last TD:first"));
-        js_input_checkboxs_skin($('INPUT[name=ddice]'));
-
-        $('INPUT[name=ddice]').click(function() {
-            oDDiceForm.show(this, '');
-        });
-
         return this;
     };
 
@@ -216,12 +250,12 @@ $(document).ready(function(){
 + '        <dt>다이스 종류</dt>\n'
 + '        <dd>\n'
 + '            <ul class="ddice_dices">\n'
-+ '        <li><button disabled>4</button></li>\n'
++ '        <li><button ddice-click="select">4</button></li>\n'
 + '        <li><button disabled>6</button></li>\n'
-+ '        <li><button disabled>8</button></li>\n'
++ '        <li><button ddice-click="select">8</button></li>\n'
 + '        <li><button ddice-click="select">10</button></li>\n'
-+ '        <li><button disabled>12</button></li>\n'
-+ '        <li><button disabled>100</button></li>\n'
++ '        <li><button ddice-click="select">12</button></li>\n'
++ '        <li><button ddice-click="select">20</button></li>\n'
 + '            </ul>\n'
 + '        </dd>\n'
 + '        <dt>선택한 다이스</dt>\n'
@@ -232,7 +266,7 @@ $(document).ready(function(){
 + '        </dd>\n'
 + '    </dl>\n'
 + '    <p class="ddice_desc remove">선택한 다이스를 클릭하면 제거할 수 있습니다.</p>\n'
-+ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">굴리기</button></div>\n'
++ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">선택완료</button></div>\n'
 + '</div>\n'
 
     
@@ -261,7 +295,7 @@ $(document).ready(function(){
 + ".ddice_result LI {display:inline;}\n"
 + ".ddice_result UL {margin: 0 0 0 0;padding: 0 0 0 0;}\n"
 ;
-    $("[ddice-id]").ddice({
+    $("[ddice]").ddice({
         "sCss" : sCss
     });
 
