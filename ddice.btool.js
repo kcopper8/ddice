@@ -109,6 +109,7 @@ $(document).ready(function(){
                     _remove(nIndex);
                     break;
                 case "close":
+                    oEvent.preventDefault();
                     $elDDiceForm.hide();
                     break;
                 case "roll":
