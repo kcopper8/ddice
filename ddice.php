@@ -1,4 +1,4 @@
-<?=$_GET["callback"] ?>(<?
+<?
 
 	function generateKey($ddiceKey, $id) {
 		return $ddiceKey . '_' . $id;
@@ -23,10 +23,12 @@
 		$ddice -> forceToRoll($type_arr);
 
 		if ($ddice -> state == ROLLED) {
-			echo "{'code' : 0}";
+			echo $_GET["callback"] ."({'code' : 0});";
 		} else {
-			echo "{'code' : 1}";
+			echo $_GET["callback"] ."({'code' : 1});";
 		}
+		exit;
+
 	} else if ($_GET["action"] == "roll_redirect") {
 		$id = $_GET["id"];
 		$types = $_GET["types"];
@@ -39,8 +41,8 @@
 		$type_arr = explode(",", $types);
 		$ddice -> forceToRoll($type_arr);
 
-		echo("<script>location.href='$redirect';</script>");
-
+		header("Location: $redirect");
+		
 	} else {
 		if($_GET["ids"]) {
 			$ids = explode(",", $_GET["ids"]);
@@ -66,9 +68,9 @@
 				$output[keyToId($ddice->key)] = $ddice;
 			}
 
-			echo json_encode($output);
+			echo $_GET["callback"] . "(" .json_encode($output) . ");";
 		} else {
-			echo "{}";
+			echo $_GET["callback"] ."({});";
 		}
 	}
-?>);
+?>

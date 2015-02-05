@@ -1,5 +1,10 @@
 $(document).ready(function(){
 (function($) {
+    // require fix for use
+    // like "http://ddice.domain.org/ddice/"
+    var serviceUrlPrefix = "<%=serviceUrlPrefix %>";
+    // require fix for use
+
     Array.prototype.empty = function() {
         this.length = 0;
         return this;
@@ -11,7 +16,7 @@ $(document).ready(function(){
     }
     
     function callUrl(htParam) {
-        var sBase = 'http://kcopper8.dothome.co.kr/ddice/ddice.php';
+        var sBase = serviceUrlPrefix + 'ddice.php';
         htParam['ddiceKey'] = 'kayzero';
         
         var aParam = [];
@@ -47,7 +52,7 @@ $(document).ready(function(){
         
         function _add(nDiceType) {
             if (aDices.length >= config.nMaxDiceSelect) {
-                alert(config.nMaxDiceSelect + "°³±îÁö ±¼¸± ¼ö ÀÖ½À´Ï´Ù.");
+                alert(config.nMaxDiceSelect + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
                 return;
             }
             aDices.push(nDiceType);
@@ -67,7 +72,7 @@ $(document).ready(function(){
         
         function _roll() {
             if (aDices.length < 1) {
-                alert("´ÙÀÌ½º¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä!");
+                alert("ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
                 return;
             }
             
@@ -156,9 +161,9 @@ $(document).ready(function(){
     $.fn.ddice = function(settings) {
         var $this = $(this);
         var config = {
-            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">ÁÖ»çÀ§ ±¼¸®±â</button>'
+            tplRoll : '<button class="ddice-button" style="font-size:8pt; margin: 0; padding: 0;">ï¿½Ö»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</button>'
             , tplResult : '<div class="ddice_result"><ul>#result#</ul></div>'
-            , tplResultDice : '<li><img src="http://kcopper8.dothome.co.kr/ddice/dice/dice#type#/#type#dice#value#.png" alt="#type#¸éÃ¼ °á°ú #value#" /></li>'
+            , tplResultDice : '<li><img src="'+ serviceUrlPrefix + 'dice/dice#type#/#type#dice#value#.png" alt="#type#ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ #value#" /></li>'
             , sCss : ''
         };
                 
@@ -172,7 +177,7 @@ $(document).ready(function(){
 
             if ($(this).attr("ddice") == 'form') {
                 var elDDiceFormType = this;
-                $('<a href="#"><img src="http://kayzero.ivyro.net/bbs/data/hunter/dice2.png"></a><input type="hidden" name="ddice">')
+                $('<a href="#"><img src="' + serviceUrlPrefix + 'dice/dice2.png"></a><input type="hidden" name="ddice">')
                     .appendTo(this)
                     .click(function(oEvent) {
                         oEvent.preventDefault();
@@ -244,11 +249,11 @@ $(document).ready(function(){
     var sFrmHtml = ''
     + '<div class="ddice_form" style="display:none;">\n'
 + '    <div class="ddice_header">\n'
-+ '        <h3>´ÙÀÌ½º ±¼¸®±â</h3>\n'
-+ '        <a href="#" title="´Ý±â" class="ddice_close_btn" ddice-click="close">X</a>\n'
++ '        <h3>ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h3>\n'
++ '        <a href="#" title="ï¿½Ý±ï¿½" class="ddice_close_btn" ddice-click="close">X</a>\n'
 + '    </div>\n'
 + '    <dl>\n'
-+ '        <dt>´ÙÀÌ½º Á¾·ù</dt>\n'
++ '        <dt>ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½</dt>\n'
 + '        <dd>\n'
 + '            <ul class="ddice_dices">\n'
 + '        <li><button ddice-click="select">4</button></li>\n'
@@ -259,15 +264,15 @@ $(document).ready(function(){
 + '        <li><button ddice-click="select">20</button></li>\n'
 + '            </ul>\n'
 + '        </dd>\n'
-+ '        <dt>¼±ÅÃÇÑ ´ÙÀÌ½º</dt>\n'
++ '        <dt>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì½ï¿½</dt>\n'
 + '        <dd>\n'
 + '    <ul class="ddice_dices ddice_output_dices">\n'
 + '        <li><button>10</button></li>\n'
 + '    </ul>\n'
 + '        </dd>\n'
 + '    </dl>\n'
-+ '    <p class="ddice_desc remove">¼±ÅÃÇÑ ´ÙÀÌ½º¸¦ Å¬¸¯ÇÏ¸é Á¦°ÅÇÒ ¼ö ÀÖ½À´Ï´Ù.</p>\n'
-+ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">¼±ÅÃ¿Ï·á</button></div>\n'
++ '    <p class="ddice_desc remove">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.</p>\n'
++ '    <div class="ddice_roll"><button class="ddice_roll_btn" ddice-click="roll">ï¿½ï¿½ï¿½Ã¿Ï·ï¿½</button></div>\n'
 + '</div>\n'
 
     

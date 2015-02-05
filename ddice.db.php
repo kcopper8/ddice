@@ -18,9 +18,13 @@ INSERT INTO `ddice` (`key`, `value`, `type`, `reg_date`, `rolled_date`) VALUES
 ('1378053745_242', '4_3_4_1', '6_6_6_6', '2013-09-02 01:51:47', '2013-09-02 01:51:47');
 */
 
-$ddice_db_id = "kcopper8";
-$ddice_db_password = "sulya16sul";
-$ddice_db_database = "kcopper8";
+// require fix for use
+$ddice_db_id = "database_id";
+$ddice_db_password = "database_password";
+$ddice_db_database = "database_dbname";
+// require fix for use
+
+
 $ddice_conn = mysql_connect('localhost', $ddice_db_id, $ddice_db_password);
 mysql_select_db ($ddice_db_database, $ddice_conn);
 
